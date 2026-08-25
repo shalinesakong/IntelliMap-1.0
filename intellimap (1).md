@@ -87,7 +87,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="intellimap(1)/intellimap-cover.jpg" width="800"><br/>
+<img src="/intellimap 1.0/intellimap-cover.jpg" width="800"><br/>
 
 <i>IntelliMap portable indoor environmental assessment system.</i>
 
