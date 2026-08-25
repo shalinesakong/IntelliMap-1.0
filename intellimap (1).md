@@ -131,7 +131,7 @@ The demonstration video should be uploaded as a local MP4 file.
 
 <video controls width="100%">
 
-  <source src="/intellimap-demo.mp4" type="video/mp4">
+  <source src="intellimap-demo.mp4" type="video/mp4">
 
 </video>
 
