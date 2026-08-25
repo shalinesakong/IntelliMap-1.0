@@ -1,115 +1,20 @@
 /*
   ============================================================================
   IntelliMap — Portable Indoor Environmental Assessment System
-  ============================================================================
-
-  HARDWARE:
-    - ESP32 Dev Board
-    - MPU6050  (Accelerometer + Gyroscope) -> motion / stationary detection
-    - BMP180   (Barometric Pressure + Temperature) -> temp + relative floor level
-    - APDS9960 (Gesture + Proximity + Ambient Light) -> lighting + gesture UI
-    - SSD1306 OLED 128x64 (I2C) -> on-device UI
-
-  WIRING (single shared I2C bus — all four devices on the same two pins):
-    SDA -> GPIO 21
-    SCL -> GPIO 22
-    VCC -> 3.3V
-    GND -> GND
-
-    I2C is a shared-bus protocol: every device is told apart by its own
-    address, not a dedicated wire, so all four sensors sit in parallel on
-    the same SDA/SCL pair. Their addresses don't collide, so this is safe:
-      - OLED (SSD1306)  addr 0x3C
-      - BMP180          addr 0x77
-      - MPU6050         addr 0x68
-      - APDS9960        addr 0x39
-
-    DEDICATED INTERRUPT PINS (genuinely unique per sensor, not shared —
-    these are separate from the I2C data lines above):
-      MPU6050 INT  -> GPIO 34 (input-only pin; wired, available for
-                                future motion-interrupt wake-up)
-      APDS9960 INT -> GPIO 35 (input-only pin; wired, available for
-                                future gesture-ready interrupt)
-    Neither interrupt pin is required for this sketch to work — both
-    sensors are polled — but they're wired and ready if you later want
-    to switch to interrupt-driven, lower-power operation.
-
-  REQUIRED LIBRARIES (Arduino Library Manager):
-    - Adafruit MPU6050
-    - Adafruit Unified Sensor
-    - Adafruit BMP085 Library      (works for BMP180)
-    - Adafruit APDS9960 Library
-    - Adafruit SSD1306
-    - Adafruit GFX Library
-    - Blynk (Blynk IoT, v1.x)      by Volodymyr Shymanskyy
-    - ESP32 BLE Arduino            (bundled with the ESP32 board package —
-                                     do NOT also install a standalone copy
-                                     of this library, it will conflict)
-
-  WHAT THIS SKETCH DOES (beyond basic sensor printing):
-    1. Runs a non-blocking state machine (IDLE -> CONFIRM_STATIONARY ->
-       RECORDING -> RESULT) driven by MPU6050 motion variance, so a
-       measurement is only ever taken when the user has genuinely stopped
-       walking — exactly as described in the proposal.
-    2. Reads ambient light straight off the APDS9960's raw ALS data
-       registers (same technique as APDS9960_ALS_RawDiagnostic.ino) rather
-       than through the Adafruit library's color-data helpers, and
-       publishes the Clear/R/G/B channels + AVALID status to both the OLED
-       and the Blynk dashboard every time a measurement is taken.
-    3. Uses APDS9960 gestures as a physical UI: swipe UP/DOWN to cycle
-       through preset room labels, swipe RIGHT to confirm/save a room,
-       swipe LEFT triggers a Wi-Fi network scan, a hand held NEAR
-       triggers a manual force-measurement.
-    4. Converts BMP180 pressure into a *relative* floor level using a
-       floor baseline captured at startup (per ~3m floor-to-floor height).
-    5. Computes a 0-100 "Building Comfort Score" from temperature and
-       light exposure, and buffers each room's data in a struct array.
-    6. Detects environmental anomalies by comparing each new room reading
-       against the running building average (temp spike, light spike,
-       floor-to-floor imbalance) and raises a Blynk event/notification.
-    7. Streams everything live to a Blynk IoT dashboard over Wi-Fi (gauges
-       for temp/pressure/light/comfort score, a floor indicator, a
-       room-label text box, an anomaly LED, and a datastream log).
-    8. ALSO broadcasts every reading over Bluetooth Low Energy as a JSON
-       payload on a custom GATT characteristic, with notify support, so a
-       phone/companion app can receive live data even without Wi-Fi —
-       the two transports run simultaneously (ESP32 handles Wi-Fi + BLE
-       coexistence in the SDK).
-    9. Runs a non-blocking asynchronous Wi-Fi network scan on a timer
-       (and on-demand via gesture or Blynk button), listing every SSID
-       in range with signal strength, and reports the list to both the
-       OLED and the Blynk dashboard.
-   10. Drives a multi-screen OLED UI (splash, live readings, "hold still"
-       countdown, result screen, and a temporary Wi-Fi scan-results
-       overlay) instead of a single static screen.
-   11. OFFLINE-FIRST DESIGN: nothing in this sketch blocks waiting for
-       Wi-Fi or the Blynk cloud. Motion detection, room recording, gesture
-       control, the OLED UI, local buffering, and BLE broadcasting all
-       keep working with zero network in range. Wi-Fi/Blynk connect in
-       the background on their own retry timers; whenever the cloud link
-       comes up, any readings captured while offline are automatically
-       synced.
-   12. ALWAYS-ON Wi-Fi: once a connection succeeds, modem-sleep is
-       disabled (WiFi.setSleep(false)) and auto-reconnect is enabled
-       (WiFi.setAutoReconnect(true)), so the radio stays fully awake and
-       reattaches immediately on its own if the link drops, on top of the
-       existing wifiMulti retry loop in maintainConnectivity().
-  ============================================================================
-*/
-
-
+  ===========================================================================
+    
 // ------------------------- BLYNK CONFIG (edit these) ----------------------
-#define BLYNK_TEMPLATE_ID   "TMPL2nop5Z4dH"      // <-- from Blynk.Console
+#define BLYNK_TEMPLATE_ID   "TMPxxxxx"      
 #define BLYNK_TEMPLATE_NAME "IntelliMap"
-#define BLYNK_AUTH_TOKEN    "PcOz2lDAYXQEHOo6u70up5o7d_cF8IZZ"
+#define BLYNK_AUTH_TOKEN    "xxxxxxx"
 
 // ------------------------- WI-FI CONFIG (edit these) -----------------------
 // Add up to 4 networks — the device connects to whichever is in range,
 // preferring the strongest signal, and switches automatically if the
 // current one drops and another becomes available. Leave unused slots
 // as "" to disable them.
-const char* WIFI_SSIDS[4]     = { "Viva",        "Shee😍",   "DESKTOP-JU5ED4V 6299", "Galaxy A3 Core2451" };
-const char* WIFI_PASSWORDS[4] = { "Sakong@8439", "123456789", "Shee2020",            "hkbv0670" };
+const char* WIFI_SSIDS[4]     = { "", "", "", "" };
+const char* WIFI_PASSWORDS[4] = { "", "", "", "" };
 
 // ------------------------------ INCLUDES -----------------------------------
 #include <Wire.h>
