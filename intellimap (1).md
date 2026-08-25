@@ -85,8 +85,6 @@ The resulting information can support **building energy assessments, indoor envi
 
 ### Images
 
-All images should be placed in the same IntelliMap project folder as the Markdown file.
-
 <p align="center">
 
 <img src="/assets/images/intellimap/intellimap-cover.jpg" width="800"><br/>
