@@ -103,7 +103,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="intellimap-oled.jpg" width="800"><br/>
+<img src="intellimap-oled.jpg"><br/>
 
 <i>IntelliMap OLED interface displaying system and environmental information.</i>
 
