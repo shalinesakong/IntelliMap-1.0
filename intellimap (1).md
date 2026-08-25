@@ -119,7 +119,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="/intellimap(1)/intellimap-testing.jpg" width="800"><br/>
+<img src="intellimap-testing.jpeg"><br/>
 
 <i>IntelliMap during indoor environmental data collection.</i>
 
