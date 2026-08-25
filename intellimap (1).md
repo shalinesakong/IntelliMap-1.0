@@ -111,7 +111,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="/IntelliMap-1.0/blob/main/intellimap-blynk.jpeg" width="800"><br/>
+<img src="/shalinesakong/IntelliMap-1.0/blob/main/IntelliMap-1.0/blob/main/intellimap-blynk.jpeg" width="800"><br/>
 
 <i>Blynk IoT dashboard displaying IntelliMap data.</i>
 
