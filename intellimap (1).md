@@ -127,7 +127,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 ### Videos
 
-The demonstration video should be uploaded as a local MP4 file.
+The demonstration video 
 
 <video controls width="100%">
 
