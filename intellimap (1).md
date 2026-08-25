@@ -6,7 +6,13 @@ title: IntelliMap – Portable Indoor Environmental Assessment and Mapping Syste
 
 excerpt: IntelliMap is a portable ESP32-based system for assessing indoor environmental conditions across different rooms and building levels. It combines temperature, pressure, ambient-light and motion sensing with room labeling, comfort scoring, anomaly detection, Blynk IoT, Bluetooth Low Energy and offline data storage.
 
-image: intellimap-cover.jpg
+<p align="center">
+
+<img src="intellimap-cover.jpg" width="300" height="50"><br/>
+
+
+
+</p>
 
 tags:
 
