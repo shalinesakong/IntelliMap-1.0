@@ -87,7 +87,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="intellimap-cover.jpg" width="50"><br/>
+<img src="intellimap-cover.jpg" width="50" height="100"><br/>
 
 <i>IntelliMap portable indoor environmental assessment system.</i>
 
@@ -95,7 +95,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="intellimap-hardware.jpg" width="50"><br/>
+<img src="intellimap-hardware.jpg" width="50" height="100"><br/>
 
 <i>ESP32, sensors and OLED display used in the IntelliMap prototype.</i>
 
@@ -103,7 +103,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="intellimap-oled.jpg" width="50"><br/>
+<img src="intellimap-oled.jpg" width="50" height="100"><br/>
 
 <i>IntelliMap OLED interface displaying system and environmental information.</i>
 
@@ -111,7 +111,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="intellimap-blynk.jpeg" width="100"><br/>
+<img src="intellimap-blynk.jpeg" width="100" height="100"><br/>
 
 <i>Blynk IoT dashboard displaying IntelliMap data.</i>
 
@@ -119,7 +119,7 @@ The resulting information can support **building energy assessments, indoor envi
 
 <p align="center">
 
-<img src="intellimap-testing.jpeg" width="100"><br/>
+<img src="intellimap-testing.jpeg" width="100" height="100"><br/>
 
 <i>IntelliMap during indoor environmental data collection.</i>
 
